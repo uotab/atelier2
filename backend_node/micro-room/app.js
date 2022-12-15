@@ -11,7 +11,8 @@ app.use(express.static('public'));
 
 
 app.get('/', (req, res) => {
-   res.sendFile(__dirname + '/public/room.html');
+  res.sendFile(__dirname + '/public/room.html');
+  n = require('child_process').fork('../micro-game/server.js',["id1","id2","idroom"]);
  });
 
 
@@ -36,5 +37,4 @@ io.on('connection', (socket) =>{
 
 server.listen(3000, () => {
   console.log('listening on *:3000');
-
 });
