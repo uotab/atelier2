@@ -1,40 +1,87 @@
 const express = require('express');
 const app = express();
-const http = require('http');
-const server = http.createServer(app);
-const path = require('path');
+const PORT = 8084;
+const http = require('http').Server(app);
+const io = require('socket.io')(http, {
 
-// On initialise une instance de socket.io en passant le server HTTP en Object. On écoute sur l'évelement connection pour les socket à venir et on le slog à la console.
-const { Server } = require ("socket.io");
-const io = new Server(server);
-app.use(express.static('public'));
+    cors: {
+
+        origin: "*"
+
+    }
+
+});
+
+const { argv } =require('node:process');
+const CardDTO = require("../model/Card");
+const UserDTO = require("../model/User");
 
 
-app.get('/', (req, res) => {
-   res.sendFile(__dirname + '/public/room.html');
- });
+//app.use(express.static('public'));
 
 
-let clientNo = 0;
+
+/* http.get('http://localhost:8082/user/'+argv[2], (resp) => {
+  let data = '';
+
+  // Un morceau de réponse est reçu
+  resp.on('data', (chunk) => {
+    data += chunk;
+  });
+
+  // La réponse complète à été reçue. On affiche le résultat.
+  resp.on('end', () => {
+    console.log(data);
+    const user = new UserDTO(data);
+    console.log(user);
+  });
+
+}).on("error", (err) => {
+  console.log("Error: " + err.message);
+}); */
+
+
+
+//let listCard = user.get("cardList")
+//io.to(clientRoom).emit("chooseCard",listCard);
 io.on('connection', (socket) =>{
-
-    clientNo++;
-    socket.join(Math.round(clientNo/2));
-    socket.emit('serverMsg',Math.round(clientNo/2));
-
+    socket.join(argv[4]);
     socket.on('buttonPressed',clientRoom =>{
         io.to(clientRoom).emit('switchFromServer')
     })
+
+    /* socket.on("attack", data=> {
+      // On verifie que la carte qui defend a encore des points de vie
+      if(data.defendingCard.hp>0){
+          // On calcule les dommages qui vont etre envoyes.
+          var realAttackValue = data.attackingCard.attack - data.defendingCard.defence;
+          // Si les dommages sont negatifs ou nuls, l'attaque sera de 1 pdv
+          if(realAttackValue<=0){
+              realAttackValue=1;
+          }
+
+          // Si il reste des pdv a la carte qui se fait attaquer APRES CETTE ATTAQUE
+          if(data.defendingCard.hp>realAttackValue){
+              // On met a jour les pdv restant
+              var newDefendingCardHp = data.defendingCard.hp - realAttackValue;
+              console.log("J'envoie la nouvelle valeur de hp pour les joueurs: "+newDefendingCardHp);
+              io.to(data.victim.socketID).emit("sendAttack",newDefendingCardHp);
+              io.to(data.user.socketID).emit("confirmedAttack",newDefendingCardHp);
+          }else{
+              // La carte qui defend est tuee: le defenseur perds
+              io.to(data.victim.socketID).emit("youLoose");
+              // L'attaquant gagne
+              io.to(data.user.socketID).emit("youWin");
+          }
+      }else{
+          // la carte qui recoit l'attaque n'est pas autorisee a jouer: elle est deja tuee
+      }
+
+  }) */
 })
-    // socket.on('clientToClient',data =>{
-    //     socket.broadcast.emit('serverToClient',data);
-    // })
+  
 
-    // 
 
-   // io.emit('some event', { someProperty: 'some value', otherProperty: 'other value' }); // This will emit the event to all connected sockets
-
-server.listen(3000, () => {
-  console.log('listening on *:3000');
-
+http.listen(PORT, () => {
+  console.log(`Server listening on ${PORT}`);
 });

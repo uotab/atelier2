@@ -11,7 +11,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import { redirect, useNavigate} from 'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -28,7 +28,8 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignIn() {
+const SignIn=(props)=>{
+  const navigate = useNavigate();
   let [userId, setUserId] = React.useState();
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -38,17 +39,17 @@ export default function SignIn() {
       password: data.get('password'),
     });
     const requestOptions = {
+      mode: 'cors',
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: data.get('username'),
     password: data.get('password') })
   };
-  fetch('http://tp.cpe.fr:8083/auth', requestOptions)
+  fetch('http://localhost:8082/auth', requestOptions)
       .then(response => response.json())
       .then ((data) => {
         getUserFromId(data)
         setUserId(data)
-        console.log(userId)
       })};
       
 
@@ -56,16 +57,16 @@ export default function SignIn() {
     const requestOptions = {
       method: 'GET',
       };
-      fetch('http://tp.cpe.fr:8083/user/'+id, requestOptions)
+      fetch('http://localhost:8082/user/'+id, requestOptions)
         .then(response => response.json())
         .then ((data) => {
+          props.user(data);
           getConnection()
-          console.log(data);
         });
   }
 
   function getConnection() {
-
+    navigate("/play");
   }
 
   return (
@@ -137,3 +138,5 @@ export default function SignIn() {
     </ThemeProvider>
   );
 }
+
+export default SignIn;
