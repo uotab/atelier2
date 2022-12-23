@@ -6,6 +6,7 @@ import { Home } from './component/Home/home';
 import SignIn from './component/Auth/auth';
 import { CardList } from './component/Market/CardList';
 import { Play } from './component/Play/containers/play';
+import { Market } from './component/Market/Market';
 
 
 export const Main =(props) =>{
@@ -21,7 +22,7 @@ export const Main =(props) =>{
           <div>
               <Routes>
                   <Route path='/home' element={<Home/>} />
-                  <Route path='/cards' element={<CardList/>} />
+                  <Route path='/market' element={<Market/>} />
                   <Route path='/' element={<SignIn user={user}/>} />
 				          <Route path='/play' element={<Play user={userCurrent}/>} />
 

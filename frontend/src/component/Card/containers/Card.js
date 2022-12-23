@@ -38,7 +38,14 @@ export const Card=(props)=> {
         case LINE_LABEL:
             display=(                
                 <CardLineDisplay
+                    onClick = {props.onClick}
+                    imgUrl={props.imgUrl}
+                    id={props.id}
                     name={props.name}
+                    energy={props.energy}
+                    hp={props.hp}
+                    defence={props.defence}
+                    attack={props.attack}
                     money = {props.money}>
                 </CardLineDisplay>
             );

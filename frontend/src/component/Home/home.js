@@ -5,6 +5,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 import { Navigation } from '../Navigation/navigation';
 import { NavLink } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
             
             const images = [
@@ -94,7 +95,8 @@ import { NavLink } from "react-router-dom";
             }));
 
 export const Home = (props)=>{
-    
+    const navigate = useNavigate();
+
 
     return (
       <><Navigation>
@@ -102,7 +104,7 @@ export const Home = (props)=>{
       </Navigation>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
                 
-                    <ImageButton
+                    <ImageButton onClick = {()=>{ navigate('/market?mode=buy')}}
                         focusRipple
                         key={'Buy'}
                         style={{
@@ -128,7 +130,7 @@ export const Home = (props)=>{
                             </Typography>
                         </Image>
                     </ImageButton>
-					<ImageButton
+					<ImageButton onClick = {()=>{ navigate('/market?mode=sell')}}
                         focusRipple
                         key={'Sell'}
                         style={{
