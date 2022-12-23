@@ -9,7 +9,7 @@ export const CardList=(props) =>{
     var [rows, setRows] = useState([])
 
     useEffect(() => {
-    fetch("http://tp.cpe.fr:8083/cards")
+    fetch("http://vps.cpe-sn.fr:8083/cards")
     .then((response) => response.json())
     .then((data) =>{
         setRows(data)

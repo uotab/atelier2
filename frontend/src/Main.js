@@ -5,9 +5,12 @@ import { Grid, Segment } from 'semantic-ui-react';
 import { Home } from './component/Home/home';
 import SignIn from './component/Auth/auth';
 import { CardList } from './component/Market/CardList';
+import { Play } from './component/Play/containers/play';
 
 
 export const Main =(props) =>{
+  const [userCurrent,setUser]=useState(null);
+  const user = (userCurrent)=>{setUser(userCurrent)}
   return (
   <>
       <BrowserRouter>
@@ -19,12 +22,14 @@ export const Main =(props) =>{
               <Routes>
                   <Route path='/home' element={<Home/>} />
                   <Route path='/cards' element={<CardList/>} />
-                  <Route path='/' element={<SignIn/>} />
+                  <Route path='/' element={<SignIn user={user}/>} />
+				          <Route path='/play' element={<Play user={userCurrent}/>} />
+
               </Routes>
           </div>
       </BrowserRouter>
+      
   </>
 );
 }
 export default Main;
-
